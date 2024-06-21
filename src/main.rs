@@ -69,7 +69,6 @@ fn draw_arcs(drawing_area: &DrawingArea, context: &Context, _width: i32, _height
 }
 
 fn draw_arc(drawing_area: &DrawingArea, context: &Context, width: i32, height: i32) {
-    let color:RGBA  = drawing_area.style_context().property("background-color");
 
     context.arc(
         width as f64 / 2.0,
@@ -79,7 +78,7 @@ fn draw_arc(drawing_area: &DrawingArea, context: &Context, width: i32, height: i
         2.0 * PI,
     );
 
-    context.set_source_rgba(color.red().into(), color.green().into(), color.blue().into(), color.alpha().into());
+    context.set_source_rgba(0.3, 0.5, 0.1, 0.7);
     context.fill();
 }
 
@@ -87,26 +86,20 @@ fn build_ui(app: &Application) {
     // Create a window and set the title
     let window = ApplicationWindow::builder()
         .application(app)
-        .title("Episode Three: Draw and Display a Picture")
+        .title("Episode Four: Draw and Display a Picture that changes when key is pressed")
         .build();
 
     let drawing_area = DrawingArea::new();
-    drawing_area.set_content_width(100);
-    drawing_area.set_content_height(100);
-    drawing_area.set_draw_func(draw_arcs);
-
     let picture = Picture::new();
-    picture.set_hexpand(true);
-    picture.set_vexpand(true);
-    picture.set_filename(Some("testdata/paul-klee-revolution-of-the-viaduct.jpeg"));
-
-    let vertical_box = gtk::Box::new(Orientation::Vertical, 0);
+    let mut vertical_box = gtk::Box::new(Orientation::Vertical, 0);
     vertical_box.append(&drawing_area);
     vertical_box.append(&picture);
     window.set_child(Some(&vertical_box));
 
     let event_controller_key = gtk::EventControllerKey::new();
-    let counter: i32 = 0;
+    let mut counter: i32 = 0;
+    set_display_content(counter, &mut vertical_box);
+    counter += 1;
     let counter_rc = Rc::new(RefCell::new(counter));
 
     let vertical_box_rc = Rc::new(RefCell::new(vertical_box));
@@ -138,7 +131,7 @@ fn build_ui(app: &Application) {
 }
 
 fn set_display_content(counter: i32, vertical_box: &mut gtk::Box) {
-    println!("counter:{}", counter);
+    println!("set display content: counter:{}", counter);
     while let Some(child) = vertical_box.first_child() {
         vertical_box.remove(&child)
     }
