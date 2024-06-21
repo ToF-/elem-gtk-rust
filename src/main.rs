@@ -1,6 +1,8 @@
+use gtk::Orientation;
 use core::f64::consts::PI;
-use gtk::cairo::Context;
 use gtk::DrawingArea;
+use gtk::Picture;
+use gtk::cairo::Context;
 use gtk::prelude::*;
 use gtk::{glib, Application, ApplicationWindow};
 
@@ -66,15 +68,23 @@ fn build_ui(app: &Application) {
     // Create a window and set the title
     let window = ApplicationWindow::builder()
         .application(app)
-        .title("Episode Two: Draw on the Window")
+        .title("Episode Three: Draw and Display a Picture")
         .build();
 
     let drawing_area = DrawingArea::new();
-    drawing_area.set_content_width(1000);
-    drawing_area.set_content_height(500);
+    drawing_area.set_content_width(100);
+    drawing_area.set_content_height(100);
     drawing_area.set_draw_func(draw_it);
 
-    window.set_child(Some(&drawing_area));
+    let picture = Picture::new();
+    picture.set_hexpand(true);
+    picture.set_vexpand(true);
+    picture.set_filename(Some("testdata/paul-klee-revolution-of-the-viaduct.jpeg"));
+
+    let vertical_box = gtk::Box::new(Orientation::Vertical, 0);
+    vertical_box.append(&drawing_area);
+    vertical_box.append(&picture);
+    window.set_child(Some(&vertical_box));
 
 
     // Present window
