@@ -5729,7 +5729,8 @@ drag_dest_row	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d
 drag_dest_row	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/tree_view.rs	/^    fn drag_dest_row(&self) -> (Option<TreePath>, TreeViewDropPosition);$/;"	f
 drag_highlight_row	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/list_box.rs	/^    pub fn drag_highlight_row(&self, row: &impl IsA<ListBoxRow>) {$/;"	f
 drag_unhighlight_row	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/list_box.rs	/^    pub fn drag_unhighlight_row(&self) {$/;"	f
-draw_it	/Users/christophethibaut/Coding/elem-gtk-rust/src/main.rs	/^fn draw_it(drawing_area: &DrawingArea, context: &Context, _width: i32, _height: i32) {$/;"	f
+draw_arc	/Users/christophethibaut/Coding/elem-gtk-rust/src/main.rs	/^fn draw_arc(drawing_area: &DrawingArea, context: &Context, width: i32, height: i32) {$/;"	f
+draw_arcs	/Users/christophethibaut/Coding/elem-gtk-rust/src/main.rs	/^fn draw_arcs(drawing_area: &DrawingArea, context: &Context, _width: i32, _height: i32) {$/;"	f
 draw_page	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/subclass/print_operation.rs	/^    fn draw_page(&self, context: &PrintContext, page_nr: i32) {$/;"	f
 draw_page_finish	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/print_operation.rs	/^    fn draw_page_finish(&self) {$/;"	f
 draw_page_finish	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/print_operation.rs	/^    fn draw_page_finish(&self);$/;"	f
@@ -12852,6 +12853,7 @@ set_display	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22
 set_display	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/style_context.rs	/^    fn set_display(&self, display: &impl IsA<gdk::Display>);$/;"	f
 set_display	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/window.rs	/^    fn set_display(&self, display: &impl IsA<gdk::Display>) {$/;"	f
 set_display	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/window.rs	/^    fn set_display(&self, display: &impl IsA<gdk::Display>);$/;"	f
+set_display_content	/Users/christophethibaut/Coding/elem-gtk-rust/src/main.rs	/^fn set_display_content(counter: i32, vertical_box: &mut gtk::Box) {$/;"	f
 set_displayed_row	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/cell_view.rs	/^    pub fn set_displayed_row(&self, path: Option<&TreePath>) {$/;"	f
 set_dither	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/print_settings.rs	/^    pub fn set_dither(&self, dither: &str) {$/;"	f
 set_documenters	/Users/christophethibaut/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gtk4-0.6.6/src/auto/about_dialog.rs	/^    pub fn set_documenters(&self, documenters: &[&str]) {$/;"	f

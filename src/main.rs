@@ -1,6 +1,10 @@
-use gtk::Orientation;
+use std::cell::RefCell;
+use gtk::gdk::RGBA;
+use std::rc::Rc;
 use core::f64::consts::PI;
+use crate::glib::clone;
 use gtk::DrawingArea;
+use gtk::Orientation;
 use gtk::Picture;
 use gtk::cairo::Context;
 use gtk::prelude::*;
@@ -19,7 +23,7 @@ fn main() -> glib::ExitCode {
     app.run()
 }
 
-fn draw_it(drawing_area: &DrawingArea, context: &Context, _width: i32, _height: i32) {
+fn draw_arcs(drawing_area: &DrawingArea, context: &Context, _width: i32, _height: i32) {
     let allocation = drawing_area.allocation();
     let width = allocation.width() as f64;
     let height = allocation.height() as f64;
@@ -64,6 +68,21 @@ fn draw_it(drawing_area: &DrawingArea, context: &Context, _width: i32, _height: 
     let _ = context.stroke();
 }
 
+fn draw_arc(drawing_area: &DrawingArea, context: &Context, width: i32, height: i32) {
+    let color:RGBA  = drawing_area.style_context().property("background-color");
+
+    context.arc(
+        width as f64 / 2.0,
+        height as f64 / 2.0,
+        (width.min(height)) as f64 / 2.0,
+        0.0,
+        2.0 * PI,
+    );
+
+    context.set_source_rgba(color.red().into(), color.green().into(), color.blue().into(), color.alpha().into());
+    context.fill();
+}
+
 fn build_ui(app: &Application) {
     // Create a window and set the title
     let window = ApplicationWindow::builder()
@@ -74,7 +93,7 @@ fn build_ui(app: &Application) {
     let drawing_area = DrawingArea::new();
     drawing_area.set_content_width(100);
     drawing_area.set_content_height(100);
-    drawing_area.set_draw_func(draw_it);
+    drawing_area.set_draw_func(draw_arcs);
 
     let picture = Picture::new();
     picture.set_hexpand(true);
@@ -86,7 +105,70 @@ fn build_ui(app: &Application) {
     vertical_box.append(&picture);
     window.set_child(Some(&vertical_box));
 
+    let event_controller_key = gtk::EventControllerKey::new();
+    let counter: i32 = 0;
+    let counter_rc = Rc::new(RefCell::new(counter));
+
+    let vertical_box_rc = Rc::new(RefCell::new(vertical_box));
+
+    event_controller_key.connect_key_pressed(clone!(@strong counter_rc, @strong window, @strong vertical_box_rc => move |_, key, _, _| {
+        if let Some(key_name) = key.name() {
+            match key_name.as_str() {
+                "q" => window.close(),
+                "space" => {
+                    if let Ok(mut counter) = counter_rc.try_borrow_mut() {
+                        if let Ok(mut vertical_box) = vertical_box_rc.try_borrow_mut() {
+                            set_display_content(*counter, &mut *vertical_box);
+                            *counter += 1;
+                            println!("renew");
+                        }
+                    }
+                },
+                other => println!("{}", other),
+            }
+        };
+        gtk::Inhibit(false)
+
+    }));
+    window.add_controller(event_controller_key);
+
 
     // Present window
     window.present();
 }
+
+fn set_display_content(counter: i32, vertical_box: &mut gtk::Box) {
+    println!("counter:{}", counter);
+    while let Some(child) = vertical_box.first_child() {
+        vertical_box.remove(&child)
+    }
+    if counter % 2 == 0 {
+        let drawing_area = DrawingArea::new();
+        drawing_area.set_content_width(100);
+        drawing_area.set_content_height(100);
+        drawing_area.set_draw_func(draw_arcs);
+
+        let picture = Picture::new();
+        picture.set_hexpand(true);
+        picture.set_vexpand(true);
+        picture.set_filename(Some("testdata/paul-klee-revolution-of-the-viaduct.jpeg"));
+
+        vertical_box.append(&drawing_area);
+        vertical_box.append(&picture);
+    } else {
+        let drawing_area = DrawingArea::new();
+        drawing_area.set_content_width(100);
+        drawing_area.set_content_height(100);
+        drawing_area.set_draw_func(draw_arc);
+
+        let picture = Picture::new();
+        picture.set_hexpand(true);
+        picture.set_vexpand(true);
+        picture.set_filename(Some("testdata/maurits-cornelis-escher-gecko.jpeg"));
+
+        vertical_box.append(&drawing_area);
+        vertical_box.append(&picture);
+    }
+}
+
+
