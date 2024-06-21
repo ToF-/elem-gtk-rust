@@ -79,7 +79,7 @@ fn draw_arc(drawing_area: &DrawingArea, context: &Context, width: i32, height: i
     );
 
     context.set_source_rgba(0.3, 0.5, 0.1, 0.7);
-    context.fill();
+    let _ = context.fill();
 }
 
 fn build_ui(app: &Application) {
@@ -108,16 +108,14 @@ fn build_ui(app: &Application) {
         if let Some(key_name) = key.name() {
             match key_name.as_str() {
                 "q" => window.close(),
-                "space" => {
+                _ => {
                     if let Ok(mut counter) = counter_rc.try_borrow_mut() {
                         if let Ok(mut vertical_box) = vertical_box_rc.try_borrow_mut() {
                             set_display_content(*counter, &mut *vertical_box);
                             *counter += 1;
-                            println!("renew");
                         }
                     }
                 },
-                other => println!("{}", other),
             }
         };
         gtk::Inhibit(false)
